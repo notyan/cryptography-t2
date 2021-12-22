@@ -33,6 +33,14 @@ class AppRSA:
         return (pb_key_str, pv_key_str)
 
     @classmethod
+    def encrypt(cls, plaintext: str, pb: PublicKey) -> str:
+        key = int(pb.split()[0])
+        n = int(pb.split()[1])
+        enc_res = [(ord(char) ** key) % n for char in plaintext]
+
+        return "".join(map(lambda c: str(c), enc_res))
+
+    @classmethod
     def get_p_and_q(cls) -> (int, int):
         p = get_rand_prime()
         q = get_rand_prime()
