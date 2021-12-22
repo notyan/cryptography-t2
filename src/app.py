@@ -13,7 +13,7 @@ def generate_key(alg: str, res: Response):
         res.status_code = fastapi.status.HTTP_400_BAD_REQUEST
         return {"err": err}
 
-    (pb, pv) = algorithm.get_keys(alg)
+    pb, pv = algorithm.get_keys(alg)
 
     return {
         "keys": {
