@@ -10,6 +10,11 @@ class EncryptionRequest(BaseModel):
     public_key: str
 
 
+class DecryptionRequest(BaseModel):
+    message: str
+    private_key: str
+
+
 def run_validators(validations: list[(Callable, Any)]) -> Optional[str]:
     for v, arg in validations:
         err = v(arg)
