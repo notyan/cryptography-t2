@@ -38,7 +38,15 @@ class AppRSA:
         n = int(pb.split()[1])
         enc_res = [(ord(char) ** key) % n for char in plaintext]
 
-        return "".join(map(lambda c: str(c), enc_res))
+        return " ".join(map(lambda c: str(c), enc_res))
+
+    @classmethod
+    def decrypt(cls, ciphertext: str, pv: PrivateKey) -> str:
+        key = int(pv.split()[0])
+        n = int(pv.split()[1])
+        dec_res = [chr((int(char) ** key) % n) for char in ciphertext.split()]
+
+        return "".join(map(lambda c: str(c), dec_res))
 
     @classmethod
     def get_p_and_q(cls) -> (int, int):
