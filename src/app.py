@@ -1,15 +1,36 @@
 from fastapi import FastAPI
 
-from . import algorithm
-#from .request import *
+from . import algorithm, request
 
 
 app = FastAPI()
 
 @app.post("/{alg}/generate-key")
 def generate_key(alg: str):
-    if not algorithm.is_supported(alg):
-        supported = ', '.join(algorithm.SUPPORTED_ALGORITHMS)
-        return {"error": f"Unsupported algorithm: {alg}. Supported algorithms are: {supported}"}
+    err = request.validate_algorithm(alg)
+    if err is not None:
+        return err
 
-    return {"res": f"Key for {alg.upper()} is successfully generated"}
+    return {
+        "res": f"Key for {alg.upper()} is successfully generated"
+    }
+
+@app.post("/{alg}/encrypt")
+def encrypt(alg: str):
+    err = request.validate_algorithm(alg)
+    if err is not None:
+        return err
+
+    return {
+        "res": f"Successfully encrypting algorithm {alg}",
+    }
+
+@app.post("/{alg}/decrypt")
+def decrypt(alg: str):
+    err = request.validate_algorithm(alg)
+    if err is not None:
+        return err
+
+    return {
+        "res": f"Successfully decrypting algorithm {alg}",
+    }
