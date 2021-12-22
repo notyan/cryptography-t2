@@ -38,7 +38,7 @@ def encrypt(alg: str, req: request.EncryptionRequest, res: Response):
         "ciphertext": algorithm.encrypt(alg, req.message, req.public_key),
     }
 
-@app.post("/{alg}/decrypt")
+@app.post("/{alg}/decrypt", status_code=fastapi.status.HTTP_200_OK)
 def decrypt(alg: str, req: request.DecryptionRequest, res: Response):
     err = request.run_validators([
         (request.validate_algorithm, alg),
