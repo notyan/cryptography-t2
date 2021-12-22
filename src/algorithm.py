@@ -21,3 +21,13 @@ def get_keys(alg: str) -> (PublicKey, PrivateKey):
     }
 
     return keys_generator[alg]()
+
+
+def encrypt(alg: str, message: str, pb: PublicKey) -> str:
+    encryptor = {
+        "rsa": lambda: AppRSA.encrypt,
+        "ecc": lambda: ("", ""),
+        "ntru": lambda: ("", ""),
+    }
+
+    return encryptor[alg]()(message, pb)

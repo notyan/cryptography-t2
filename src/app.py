@@ -34,7 +34,8 @@ def encrypt(alg: str, req: request.EncryptionRequest, res: Response):
         return {"err": err}
 
     return {
-        "res": f"Successfully encrypting algorithm {alg}",
+        "algorithm": alg,
+        "ciphertext": algorithm.encrypt(alg, req.message, req.public_key),
     }
 
 @app.post("/{alg}/decrypt")
