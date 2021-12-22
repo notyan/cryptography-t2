@@ -1,16 +1,15 @@
 from fastapi import FastAPI
 
-from .algorithms import *
-from .request import *
+from . import algorithm
+#from .request import *
 
 
 app = FastAPI()
 
 @app.post("/{alg}/generate-key")
-def generate_key(alg: str, req: KeyGenerationRequest):
-    if not is_valid_algorithm(alg):
-        msg = ( f"Unsupported algorithm: {alg}."
-                f" Supported algorithms are: {', '.join(SUPPORTED_ALGORITHMS)}" )
-        return {"error": msg}
+def generate_key(alg: str):
+    if not algorithm.is_supported(alg):
+        supported = ', '.join(algorithm.SUPPORTED_ALGORITHMS)
+        return {"error": f"Unsupported algorithm: {alg}. Supported algorithms are: {supported}"}
 
-    return {"req": req}
+    return {"res": f"Key for {alg.upper()} is successfully generated"}

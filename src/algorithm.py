@@ -4,5 +4,5 @@ SUPPORTED_ALGORITHMS = [
     "ntru",
 ]
 
-def is_valid_algorithm(alg: str) -> bool:
+def is_supported(alg: str) -> bool:
     return alg in SUPPORTED_ALGORITHMS
