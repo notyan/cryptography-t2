@@ -27,8 +27,6 @@ class AppRSA:
 
         e, d = AppRSA.get_e_and_d(phi)
 
-        print(p)
-        print(q)
         pb_key_str = f"{e} {n}"
         pv_key_str = f"{d} {n}"
 
