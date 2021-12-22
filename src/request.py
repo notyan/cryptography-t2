@@ -9,12 +9,6 @@ class EncryptionRequest(BaseModel):
     message: str
     public_key: str
 
-    def get_e(self):
-        self.public_key.split()[0]
-
-    def get_n(self):
-        self.public_key.split()[1]
-
 
 def run_validators(validations: list[(Callable, Any)]) -> Optional[str]:
     for v, arg in validations:
