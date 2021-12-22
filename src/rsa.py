@@ -32,7 +32,8 @@ class AppRSA:
 
         return (pb_key_str, pv_key_str)
 
-    def get_p_and_q() -> (int, int):
+    @classmethod
+    def get_p_and_q(cls) -> (int, int):
         p = get_rand_prime()
         q = get_rand_prime()
         while p == q:
@@ -40,7 +41,8 @@ class AppRSA:
 
         return (p, q)
 
-    def get_e_and_d(phi: int) -> (int, int):
+    @classmethod
+    def get_e_and_d(cls, phi: int) -> (int, int):
         e = random.randrange(1, phi)
         g = math.gcd(e, phi)
         while g != 1:
