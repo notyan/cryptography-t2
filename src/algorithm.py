@@ -31,3 +31,13 @@ def encrypt(alg: str, message: str, pb: PublicKey) -> str:
     }
 
     return encryptor[alg]()(message, pb)
+
+
+def decrypt(alg: str, message: str, pv: PrivateKey) -> str:
+    decryptor = {
+        "rsa": lambda: AppRSA.decrypt,
+        "ecc": lambda: ("", ""),
+        "ntru": lambda: ("", ""),
+    }
+
+    return decryptor[alg]()(message, pv)

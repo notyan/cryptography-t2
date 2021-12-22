@@ -39,11 +39,17 @@ def encrypt(alg: str, req: request.EncryptionRequest, res: Response):
     }
 
 @app.post("/{alg}/decrypt")
-def decrypt(alg: str):
-    err = request.validate_algorithm(alg)
+def decrypt(alg: str, req: request.DecryptionRequest, res: Response):
+    err = request.run_validators([
+        (request.validate_algorithm, alg),
+        (request.validate_key_format, req.private_key)
+    ])
+
     if err is not None:
-        return err
+        res.status_code = fastapi.status.HTTP_400_BAD_REQUEST
+        return {"err": err}
 
     return {
-        "res": f"Successfully decrypting algorithm {alg}",
+        "algorithm": alg,
+        "ciphertext": algorithm.decrypt(alg, req.message, req.private_key),
     }
