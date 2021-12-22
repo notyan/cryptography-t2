@@ -1,0 +1,2 @@
+PublicKey = str
+PrivateKey = str
