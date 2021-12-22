@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Any, Callable, Optional
 
 from pydantic import BaseModel
 
@@ -14,6 +14,13 @@ class EncryptionRequest(BaseModel):
 
     def get_n(self):
         self.public_key.split()[1]
+
+
+def run_validators(validations: list[(Callable, Any)]) -> Optional[str]:
+    for v, arg in validations:
+        err = v(arg)
+        if err is not None:
+            return err
 
 
 def validate_algorithm(alg: str) -> Optional[str]:

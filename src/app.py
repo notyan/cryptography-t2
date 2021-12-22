@@ -24,12 +24,11 @@ def generate_key(alg: str, res: Response):
 
 @app.post("/{alg}/encrypt", status_code=fastapi.status.HTTP_200_OK)
 def encrypt(alg: str, req: request.EncryptionRequest, res: Response):
-    err = request.validate_algorithm(alg)
-    if err is not None:
-        res.status_code = fastapi.status.HTTP_400_BAD_REQUEST
-        return {"err": err}
+    err = request.run_validators([
+        (request.validate_algorithm, alg),
+        (request.validate_key_format, req.public_key)
+    ])
 
-    err = request.validate_key_format(req.public_key)
     if err is not None:
         res.status_code = fastapi.status.HTTP_400_BAD_REQUEST
         return {"err": err}
