@@ -51,5 +51,5 @@ def decrypt(alg: str, req: request.DecryptionRequest, res: Response):
 
     return {
         "algorithm": alg,
-        "ciphertext": algorithm.decrypt(alg, req.message, req.private_key),
+        "plaintext": algorithm.decrypt(alg, req.message, req.private_key),
     }
