@@ -3,3 +3,4 @@ fastapi==0.70.1
 rsa==4.8
 sympy==1.9
 pytest==6.2.5
+requests==2.26.0
