@@ -29,6 +29,6 @@ def validate_algorithm(alg: str) -> Optional[str]:
 
 
 def validate_key_format(key: str) -> Optional[str]:
-    key = key.split()
-    if len(key) != 2 or not key[0].isdigit() or not key[1].isdigit():
-        return "invalid key format"
+    for k in key.split():
+        if not k.isdigit():
+            return "invalid key format"
