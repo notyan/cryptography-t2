@@ -1,3 +1,4 @@
+from .ecc import AppECC
 from .rsa import AppRSA
 from .types import PublicKey, PrivateKey
 
@@ -16,7 +17,7 @@ def is_supported(alg: str) -> bool:
 def get_keys(alg: str) -> (PublicKey, PrivateKey):
     keys_generator = {
         "rsa": lambda: AppRSA.generate_keys(),
-        "ecc": lambda: ("", ""),
+        "ecc": lambda: AppECC.generate_keys(),
         "ntru": lambda: ("", ""),
     }
 
