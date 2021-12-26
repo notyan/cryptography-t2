@@ -3,6 +3,7 @@ import binascii
 import json
 import math
 import os
+import random
 
 from .types import PrivateKey, PublicKey
 
@@ -93,6 +94,9 @@ class Point:
 
     def dict(self):
         return {"x": self.x, "y": self.y}
+
+    def __add__(self, other):
+        return self.curve.add_point(self, other)
 
     def __neg__(self):
         return self.curve.neg_point(self)
@@ -216,7 +220,7 @@ class Curve:
             y = self.compute_y(x)
             if y:
                 return Point(x, y, self)
-            plaintext += urandom(1)
+            plaintext += os.urandom(1)
 
     def decode_point(self, point: Point) -> bytes:
         byte_len = bytes_count_of(point.x)
@@ -247,7 +251,9 @@ class AppECC:
 
     @classmethod
     def encrypt(cls, plaintext: str, pb: PublicKey) -> str:
-        pass
+        p1, p2 = cls.encrypt_bytes(plaintext.encode(), pb)
+
+        return f"{p1} {p2}"
 
     @classmethod
     def decrypt(cls, ciphertext: str, pv: PrivateKey) -> str:
@@ -279,3 +285,31 @@ class AppECC:
     def get_public_key(cls, d: int) -> Point:
         global curve
         return d * curve.G()
+
+    @classmethod
+    def encrypt_bytes(cls, plaintext: bytes, pb: Point) -> (Point, Point):
+        global curve
+
+        points = pb.split()
+        x = int(points[0])
+        y = int(points[1])
+        pb = Point(x, y, curve)
+
+        M = curve.encode_point(plaintext)
+
+        return cls.encrypt_point(M, pb)
+
+    @classmethod
+    def encrypt_point(cls, plaintext: Point, pb: Point) -> (Point, Point):
+        global curve
+
+        G = curve.G()
+        M = plaintext
+
+        random.seed(os.urandom(1024))
+        k = random.randint(1, curve.n)
+
+        C1 = k * G
+        C2 = M + k * pb
+
+        return C1, C2
