@@ -257,7 +257,15 @@ class AppECC:
 
     @classmethod
     def decrypt(cls, ciphertext: str, pv: PrivateKey) -> str:
-        pass
+        global curve
+
+        ct = ciphertext.split()
+        assert len(ct) == 4
+
+        p1 = Point(int(ct[0]), int(ct[1]), curve)
+        p2 = Point(int(ct[2]), int(ct[3]), curve)
+
+        return cls.decrypt_bytes(int(pv), p1, p2)
 
     @classmethod
     def get_private_key(cls) -> int:
@@ -313,3 +321,19 @@ class AppECC:
         C2 = M + k * pb
 
         return C1, C2
+
+    @classmethod
+    def decrypt_bytes(cls, pv: int, p1: Point, p2: Point) -> bytes:
+        global curve
+
+        M = cls.decrypt_point(pv, p1, p2)
+
+        return curve.decode_point(M)
+
+    @classmethod
+    def decrypt_point(cls, pv: int, p1: Point, p2: Point) -> Point:
+        global curve
+
+        M = p2 + (curve.n - pv) * p1
+
+        return M
