@@ -254,10 +254,6 @@ class AppECC:
         pass
 
     @classmethod
-    def get_public_key(cls):
-        pass
-
-    @classmethod
     def get_private_key(cls) -> int:
         global curve
 
