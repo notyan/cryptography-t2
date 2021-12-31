@@ -1,10 +1,20 @@
 from fastapi import FastAPI, Response
+from fastapi.middleware.cors import CORSMiddleware
 import fastapi
 
 from . import algorithm, request
 
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 @app.post("/{alg}/generate-key", status_code=fastapi.status.HTTP_200_OK)
 def generate_key(alg: str, res: Response):
